@@ -3,6 +3,11 @@ VitaliyLedenev Infra repository
 ---
 
 # Урок 6.Знакомство с облачной инфраструктурой и облачными сервисами
+
+```
+testapp_IP = 51.250.69.201
+testapp_port = 9292
+```
 ## Настройка рабочего окружения для работы с Yandex Cloud через YC CLI
 * На странице https://cloud.yandex.ru/docs/cli/quickstart выберем  для своей ОС и установим утилиту **yc**:
 
