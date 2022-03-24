@@ -5,7 +5,7 @@ VitaliyLedenev Infra repository
 # Урок 6.Знакомство с облачной инфраструктурой и облачными сервисами
 
 ```
-testapp_IP = 51.250.69.201
+testapp_IP = 51.250.14.14
 testapp_port = 9292
 ```
 ## Настройка рабочего окружения для работы с Yandex Cloud через YC CLI
