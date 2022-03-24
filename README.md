@@ -1,7 +1,75 @@
 # VitaliyLedenev_infra
 VitaliyLedenev Infra repository
+---
 
-#5 Урок. Знакомство с облачной инфраструктурой и облачными сервисами
+# Урок 6.Знакомство с облачной инфраструктурой и облачными сервисами
+## Настройка рабочего окружения для работы с Yandex Cloud через YC CLI
+* На странице https://cloud.yandex.ru/docs/cli/quickstart выберем  для своей ОС и установим утилиту **yc**:
+
+`curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash`
+
+* согласно руководству https://cloud.yandex.ru/docs/cli/operations/profile/profile-create создаем профиль, подключаемся  к yandex cloud через утилиту yc
+* После подключения проверяем, что все ок
+```
+# текущие настройки
+yc config list
+# список профилей, какой активный
+yc config profile list
+# получить настройки конкретного профиля
+yc config profile get default
+```
+
+## Создадим новый инстанс через yc
+```
+yc compute instance create \
+  —name reddit-app \
+  —hostname reddit-app \
+  —memory=4 \
+  —create-boot-disk image-folder-id=standard-images,image-family=ubuntu-1604-lts,size=10GB \
+  —network-interface subnet-name=default-ru-central1-a,nat-ip-version=ipv4 \
+  —metadata serial-port-enable=1 \
+  —ssh-key ~/.ssh/appuser.pub
+```
+
+
+## Самостоятельная работа: создадим файлы для установки и запуска приложения на созданном инстансе
+* **install_ruby.sh**
+```
+#!/bin/sh
+sudo apt update && sudo apt upgrade -y
+ufw disable
+sudo systemctl disable apparmor
+sudo apt install -y ruby-full ruby-bundler build-essential
+ruby -v
+bundler -v
+```
+* **install_mongodb.sh**
+```
+#!/bin/sh
+wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo systemctl start mongod
+sudo systemctl enable mongod
+```
+* **deploy.sh**
+```
+#!/bin/sh
+sudo apt-get install git -y
+git clone -b monolith https://github.com/express42/reddit.git
+cd reddit && bundle install
+puma -d
+```
+
+
+
+---
+
+
+
+
+# 5 Урок. Знакомство с облачной инфраструктурой и облачными сервисами
 ## Yandex Cloud
 ```
 bastion_IP = 178.154.231.176
